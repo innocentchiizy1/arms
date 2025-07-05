@@ -1,4 +1,4 @@
-export const BASE_URL = "https://4d7d-197-211-59-77.ngrok-free.app";
+export const BASE_URL = 'https://59dd-197-211-59-77.ngrok-free.app';
 
 // Common headers for all requests
 const getHeaders = (includeAuth = true) => {
@@ -127,12 +127,21 @@ export const apiService = {
     }),
 
   // Onboarding
-  submitOnboarding: (onboardingData) =>
-    apiRequest("/onboarding", {
-      method: "POST",
-      body: JSON.stringify(onboardingData),
-      includeAuth: false,
-    }),
+  submitCompanyOnboarding: (data) => {
+    return fetch(`${BASE_URL}/api/v1/company/onboard`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then(async (res) => {
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    });
+  },
 
   // Generic CRUD operations
   get: (endpoint) => apiRequest(endpoint),

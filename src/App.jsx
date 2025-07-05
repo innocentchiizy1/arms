@@ -62,7 +62,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public routes (no authentication required) */}
+        {/* Make onboarding landing the default page */}
+        <Route path="/" element={<OnboardingLanding />} />
         <Route path="/onboarding" element={<OnboardingLanding />} />
         <Route path="/onboarding/form" element={<OnboardingForm />} />
         <Route path="/onboarding/success" element={<OnboardingSuccess />} />
@@ -79,10 +80,6 @@ function App() {
                   <Header user={user} onLogout={handleLogout} />
                   <div className="content">
                     <Routes>
-                      <Route
-                        path="/"
-                        element={<Navigate to="/dashboard" replace />}
-                      />
                       <Route
                         path="/dashboard"
                         element={<Dashboard user={user} />}

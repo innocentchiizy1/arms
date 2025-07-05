@@ -1,64 +1,109 @@
 .onboarding-form-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 20px;
+    background: linear-gradient(120deg, #e0e7ff 0%, #f5f7fa 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.form-wrapper {
-    max-width: 800px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 20px;
+    position: relative;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
-.form-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.onboarding-form-container::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    left: -120px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #667eea55 0%, transparent 70%);
+    z-index: 0;
+}
+
+.onboarding-form-container::after {
+    content: '';
+    position: absolute;
+    bottom: -120px;
+    right: -120px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #764ba255 0%, transparent 70%);
+    z-index: 0;
+}
+
+.onboarding-form-layout {
+    display: flex;
+    width: 100%;
+    max-width: 1000px;
+    min-height: 700px;
+    background: none;
+    border-radius: 36px;
+    box-shadow: 0 16px 48px rgba(102, 126, 234, 0.18), 0 2px 8px rgba(44, 62, 80, 0.06);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.onboarding-form-illustration {
+    flex: 1.1;
+    background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 32px;
     color: white;
-    padding: 40px;
+    padding: 48px 32px 24px 32px;
     text-align: center;
+    border-radius: 36px 36px 0 0;
+    box-shadow: 0 2px 16px rgba(102, 126, 234, 0.10);
 }
 
 .logo-section {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 18px;
+    margin-bottom: 18px;
 }
 
 .logo {
-    font-size: 2.5rem;
-    background: rgba(255, 255, 255, 0.2);
+    font-size: 2.8rem;
+    background: rgba(255, 255, 255, 0.22);
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 12px rgba(44, 62, 80, 0.10);
 }
 
 .form-header h1 {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.2rem;
+    font-weight: 900;
     margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1.2px;
+    text-shadow: 0 2px 12px rgba(44, 62, 80, 0.18);
 }
 
 .form-header p {
-    font-size: 1.1rem;
-    opacity: 0.9;
+    font-size: 1.15rem;
+    opacity: 0.98;
     margin: 0;
+    font-weight: 500;
 }
 
 .progress-bar {
     display: flex;
-    background: #f8f9fa;
-    padding: 20px 40px;
+    background: #f8f9faee;
+    padding: 22px 40px;
     border-bottom: 1px solid #e9ecef;
+    justify-content: center;
+    gap: 0;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.06);
 }
 
 .progress-step {
@@ -69,6 +114,7 @@
     position: relative;
     opacity: 0.5;
     transition: all 0.3s ease;
+    min-width: 90px;
 }
 
 .progress-step.active {
@@ -78,44 +124,49 @@
 .progress-step:not(:last-child)::after {
     content: '';
     position: absolute;
-    top: 15px;
+    top: 18px;
     left: 50%;
     width: 100%;
-    height: 2px;
+    height: 3px;
     background: #e9ecef;
     z-index: 1;
+    border-radius: 2px;
 }
 
 .progress-step.active:not(:last-child)::after {
-    background: #667eea;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
 }
 
 .step-number {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: #e9ecef;
     color: #6c757d;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
+    font-weight: 900;
     margin-bottom: 8px;
     position: relative;
     z-index: 2;
+    font-size: 1.18rem;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.10);
 }
 
 .progress-step.active .step-number {
-    background: #667eea;
+    background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
     color: white;
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.13);
 }
 
 .progress-step span {
-    font-size: 0.8rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 700;
     color: #6c757d;
     text-align: center;
+    letter-spacing: 0.2px;
 }
 
 .progress-step.active span {
@@ -123,10 +174,26 @@
 }
 
 .onboarding-form {
-    padding: 40px;
+    padding: 48px 40px 36px 40px;
+    background: transparent;
+    border-radius: 0 0 36px 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .form-step {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.06);
+    padding: 32px 24px 18px 24px;
+    margin-bottom: 18px;
     animation: fadeIn 0.3s ease;
 }
 
@@ -143,23 +210,28 @@
 }
 
 .form-step h3 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #2c3e50;
-    margin-bottom: 30px;
-    font-weight: 600;
+    margin-bottom: 28px;
+    font-weight: 900;
     border-bottom: 2px solid #667eea;
     padding-bottom: 10px;
+    text-align: center;
+    letter-spacing: 0.2px;
 }
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 18px;
+    justify-items: center;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+    width: 100%;
+    max-width: 320px;
 }
 
 .form-group.full-width {
@@ -169,20 +241,22 @@
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    font-weight: 600;
+    font-weight: 700;
     color: #2c3e50;
+    letter-spacing: 0.1px;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 12px 16px;
+    padding: 14px 18px;
     border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 1rem;
+    border-radius: 10px;
+    font-size: 1.05rem;
     transition: all 0.3s ease;
     background: white;
+    box-shadow: 0 1.5px 6px rgba(44, 62, 80, 0.04);
 }
 
 .form-group input:focus,
@@ -190,7 +264,7 @@
 .form-group textarea:focus {
     outline: none;
     border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.13);
 }
 
 .form-group textarea {
@@ -200,9 +274,10 @@
 
 .checkbox-group {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-top: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+    justify-items: center;
 }
 
 .checkbox-item {
@@ -210,9 +285,11 @@
     align-items: center;
     gap: 10px;
     cursor: pointer;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 10px 14px;
+    border-radius: 8px;
     transition: background-color 0.3s ease;
+    background: rgba(245, 247, 250, 0.7);
+    box-shadow: 0 1.5px 6px rgba(44, 62, 80, 0.04);
 }
 
 .checkbox-item:hover {
@@ -227,34 +304,35 @@
 
 .form-actions {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin-top: 40px;
-    padding-top: 30px;
+    margin-top: 32px;
+    padding-top: 24px;
     border-top: 1px solid #e9ecef;
+    gap: 18px;
 }
 
 .btn-primary,
 .btn-secondary {
-    padding: 12px 30px;
+    padding: 14px 36px;
     border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
+    border-radius: 10px;
+    font-size: 1.08rem;
+    font-weight: 900;
     cursor: pointer;
     transition: all 0.3s ease;
     min-width: 120px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.13);
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 28px rgba(102, 126, 234, 0.18);
 }
 
 .btn-secondary {
@@ -267,58 +345,59 @@
     transform: translateY(-2px);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .onboarding-form-container {
-        padding: 10px;
-    }
+.error-message {
+    color: #dc3545;
+    background: #fff8f8;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 18px;
+    text-align: center;
+    font-weight: 700;
+}
 
+/* Responsive Design */
+@media (max-width: 900px) {
     .form-wrapper {
-        border-radius: 15px;
+        max-width: 98vw;
+        border-radius: 18px;
     }
 
     .form-header {
-        padding: 30px 20px;
-    }
-
-    .form-header h1 {
-        font-size: 1.5rem;
-    }
-
-    .progress-bar {
-        padding: 15px 20px;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .progress-step {
-        flex-direction: row;
-        gap: 10px;
-    }
-
-    .progress-step:not(:last-child)::after {
-        display: none;
+        padding: 32px 12px 18px 12px;
+        border-radius: 18px 18px 0 0;
     }
 
     .onboarding-form {
-        padding: 20px;
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .checkbox-group {
-        grid-template-columns: 1fr;
-    }
-
-    .form-actions {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .btn-primary,
-    .btn-secondary {
         width: 100%;
+        padding: 24px 12px 18px 12px;
+        border-radius: 0 0 18px 18px;
+    }
+
+    .form-step {
+        padding: 18px 6px 10px 6px;
+        border-radius: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .form-step h3 {
+        font-size: 1.1rem;
+    }
+
+    .form-wrapper {
+        border-radius: 10px;
+    }
+
+    .form-header {
+        border-radius: 10px 10px 0 0;
+    }
+
+    .onboarding-form {
+        border-radius: 0 0 10px 10px;
     }
 }

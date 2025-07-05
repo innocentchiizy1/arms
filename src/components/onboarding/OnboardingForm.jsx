@@ -40,6 +40,11 @@ function OnboardingForm() {
     additionalNotes: "",
     preferredContactMethod: "email",
     bestTimeToContact: "morning",
+
+    // New fields for backend
+    firstName: "",
+    lastName: "",
+    staffId: "",
   });
 
   const handleChange = (e) => {
@@ -79,11 +84,36 @@ function OnboardingForm() {
     setLoading(true);
     setError("");
 
-    try {
-      // Submit to the real API
-      await apiService.submitOnboarding(formData);
+    // Map formData to backend structure
+    const payload = {
+      name: formData.companyName,
+      industry: formData.industry,
+      sizeCategory: formData.companySize,
+      address: {
+        street: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zip: formData.zipCode,
+        country: formData.country,
+      },
+      contactInfo: {
+        phone: formData.phone,
+        email: formData.contactEmail,
+        website: formData.website,
+      },
+      settings: {
+        timezone: formData.timezone || '',
+        currency: formData.currency || '',
+      },
+      firstName: formData.firstName || formData.contactName.split(' ')[0] || '',
+      lastName: formData.lastName || formData.contactName.split(' ')[1] || '',
+      email: formData.contactEmail,
+      staffId: formData.staffId || '',
+      // Optionally add more fields if needed
+    };
 
-      // Navigate to success page
+    try {
+      await apiService.submitCompanyOnboarding(payload);
       navigate("/onboarding/success");
     } catch (err) {
       console.error("Onboarding submission failed:", err);
@@ -558,61 +588,64 @@ function OnboardingForm() {
     }
   };
 
+  // Progress steps for vertical bar
+  const steps = [
+    { label: 'Company Info' },
+    { label: 'Contact Info' },
+    { label: 'Requirements' },
+    { label: 'Additional' },
+  ]
+
   return (
     <div className="onboarding-form-container">
-      <div className="form-wrapper">
-        <div className="form-header">
-          <div className="logo-section">
-            <div className="logo">🚀</div>
-            <h1>TechPal HRM Onboarding</h1>
-          </div>
-          <p>Let's get you started with TechPal HRM</p>
+      <div className="onboarding-form-layout">
+        <div className="onboarding-form-illustration">
+          <div className="illustration-icon">🚀</div>
+          <h2>Welcome to TechPal HRM</h2>
+          <p>
+            Start your journey with a modern HRM platform. Complete this quick onboarding to get your company set up in minutes!
+          </p>
         </div>
-
-        <div className="progress-bar">
-          <div className="progress-step active">
-            <div className="step-number">1</div>
-            <span>Company Info</span>
+        <div className="form-wrapper">
+          <div className="form-header">
+            <div className="logo-section">
+              <div className="logo">🚀</div>
+              <h1>TechPal HRM Onboarding</h1>
+            </div>
+            <p>Let's get you started with TechPal HRM</p>
           </div>
-          <div className={`progress-step ${currentStep >= 2 ? "active" : ""}`}>
-            <div className="step-number">2</div>
-            <span>Contact Info</span>
-          </div>
-          <div className={`progress-step ${currentStep >= 3 ? "active" : ""}`}>
-            <div className="step-number">3</div>
-            <span>Requirements</span>
-          </div>
-          <div className={`progress-step ${currentStep >= 4 ? "active" : ""}`}>
-            <div className="step-number">4</div>
-            <span>Additional</span>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="onboarding-form">
-          {renderStepContent()}
-
-          <div className="form-actions">
-            {currentStep > 1 && (
-              <button
-                type="button"
-                onClick={prevStep}
-                className="btn-secondary"
+          <div className="progress-bar">
+            {steps.map((step, idx) => (
+              <div
+                key={step.label}
+                className={`progress-step${currentStep === idx + 1 ? ' active' : ''}`}
               >
-                Previous
-              </button>
-            )}
-
-            {currentStep < 4 ? (
-              <button type="button" onClick={nextStep} className="btn-primary">
-                Next
-              </button>
-            ) : (
-              <button type="submit" className="btn-primary">
-                Submit Onboarding Request
-              </button>
-            )}
+                <div className="step-number">{idx + 1}</div>
+                <span>{step.label}</span>
+              </div>
+            ))}
           </div>
-        </form>
+          <form onSubmit={handleSubmit} className="onboarding-form">
+            {error && <div className="error-message">{error}</div>}
+            {renderStepContent()}
+            <div className="form-actions">
+              {currentStep > 1 && (
+                <button type="button" onClick={prevStep} className="btn-secondary">
+                  Previous
+                </button>
+              )}
+              {currentStep < 4 ? (
+                <button type="button" onClick={nextStep} className="btn-primary">
+                  Next
+                </button>
+              ) : (
+                <button type="submit" className="btn-primary" disabled={loading}>
+                  {loading ? 'Submitting...' : 'Submit Onboarding Request'}
+                </button>
+              )}
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
