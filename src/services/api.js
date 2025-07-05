@@ -128,7 +128,7 @@ export const apiService = {
 
   // Onboarding
   submitCompanyOnboarding: (data) => {
-    return fetch(`${BASE_URL}/api/v1/company/onboard`, {
+    return fetch(`${BASE_URL}/api/v1/company`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

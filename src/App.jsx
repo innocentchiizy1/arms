@@ -32,6 +32,7 @@ import OnboardingLanding from "./components/onboarding/OnboardingLanding";
 import OnboardingForm from "./components/onboarding/OnboardingForm";
 import OnboardingSuccess from "./components/onboarding/OnboardingSuccess";
 import TestAPI from "./components/TestAPI";
+import TestAllAPI from "./components/TestAllAPI";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -68,6 +69,7 @@ function App() {
         <Route path="/onboarding/form" element={<OnboardingForm />} />
         <Route path="/onboarding/success" element={<OnboardingSuccess />} />
         <Route path="/test-api" element={<TestAPI />} />
+        <Route path="/test-all-api" element={<TestAllAPI />} />
 
         {/* Protected routes (require authentication) */}
         <Route
