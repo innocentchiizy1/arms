@@ -1,0 +1,58 @@
+.files-manager {
+    padding: 30px;
+}
+
+.files-manager-header {
+    margin-bottom: 30px;
+}
+
+.files-manager-header h2 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    color: #2c3e50;
+}
+
+.files-manager-header p {
+    margin: 0;
+    color: #7f8c8d;
+    font-size: 16px;
+}
+
+.files-manager-content {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.files-manager-content h3 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    color: #2c3e50;
+}
+
+.files-list {
+    list-style: none;
+    padding: 0;
+}
+
+.files-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.files-list li:last-child {
+    border-bottom: none;
+}
+
+.file-meta {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+    .files-manager {
+        padding: 20px;
+    }
+}

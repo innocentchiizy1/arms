@@ -1,0 +1,52 @@
+.training {
+    padding: 30px;
+}
+
+.training-header {
+    margin-bottom: 30px;
+}
+
+.training-header h2 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    color: #2c3e50;
+}
+
+.training-header p {
+    margin: 0;
+    color: #7f8c8d;
+    font-size: 16px;
+}
+
+.training-content {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.training-content h3 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    color: #2c3e50;
+}
+
+.training-list {
+    list-style: none;
+    padding: 0;
+}
+
+.training-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.training-list li:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .training {
+        padding: 20px;
+    }
+}

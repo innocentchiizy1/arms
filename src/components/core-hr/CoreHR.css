@@ -1,0 +1,65 @@
+.core-hr {
+  padding: 30px;
+}
+
+.core-hr-header {
+  margin-bottom: 30px;
+}
+
+.core-hr-header h2 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+  color: #2c3e50;
+}
+
+.core-hr-header p {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 16px;
+}
+
+.core-hr-content {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hr-section {
+  margin-bottom: 30px;
+}
+
+.hr-section h3 {
+  margin: 0 0 15px 0;
+  font-size: 20px;
+  color: #2c3e50;
+}
+
+.hr-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.hr-section li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.hr-section li:last-child {
+  border-bottom: none;
+}
+
+.hr-section a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.hr-section a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .core-hr {
+    padding: 20px;
+  }
+} 

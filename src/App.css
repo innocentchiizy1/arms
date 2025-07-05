@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f6fa;
+  color: #2c3e50;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  background: #f5f6fa;
+  min-height: calc(100vh - 70px);
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 18px;
+  color: #7f8c8d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+}
+
+/* Global Button Styles */
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Global Input Styles */
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* Global Link Styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
