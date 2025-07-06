@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://59dd-197-211-59-77.ngrok-free.app';
+export const BASE_URL = "https://fdf6-102-89-41-108.ngrok-free.app";
 
 // Common headers for all requests
 const getHeaders = (includeAuth = true) => {
@@ -15,7 +15,7 @@ const getHeaders = (includeAuth = true) => {
 
   return headers;
 };
-
+console.log(getHeaders());
 // Generic request handler
 const apiRequest = async (endpoint, options = {}) => {
   const url = `${BASE_URL}${endpoint}`;
@@ -50,7 +50,7 @@ export const apiService = {
 
   // Authentication
   login: (credentials) =>
-    apiRequest("/auth/login", {
+    apiRequest("/api/v1/auth/login", {
       method: "POST",
       body: JSON.stringify(credentials),
       includeAuth: false,
@@ -65,10 +65,10 @@ export const apiService = {
   getCurrentUser: () => apiRequest("/auth/me"),
 
   // Employee management
-  getEmployees: () => apiRequest("/employees"),
+  getEmployees: () => apiRequest("/api/v1/company/employees"),
   getEmployee: (id) => apiRequest(`/employees/${id}`),
   createEmployee: (employeeData) =>
-    apiRequest("/employees", {
+    apiRequest("/api/v1/company/add/employee", {
       method: "POST",
       body: JSON.stringify(employeeData),
     }),
@@ -81,6 +81,14 @@ export const apiService = {
     apiRequest(`/employees/${id}`, {
       method: "DELETE",
     }),
+
+  // Department management
+  createDepartment: (departmentData) =>
+    apiRequest("/api/v1/company/add/department", {
+      method: "POST",
+      body: JSON.stringify(departmentData),
+    }),
+  getDepartments: () => apiRequest("/api/v1/company/departments"),
 
   // Dashboard
   getDashboardStats: () => apiRequest("/dashboard/stats"),
@@ -128,16 +136,18 @@ export const apiService = {
 
   // Onboarding
   submitCompanyOnboarding: (data) => {
-    return fetch(`${BASE_URL}/api/v1/company`, {
-      method: 'POST',
+    return fetch(`${BASE_URL}/api/v1/company/add`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     }).then(async (res) => {
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+        throw new Error(
+          errorData.message || `HTTP error! status: ${res.status}`
+        );
       }
       return res.json();
     });

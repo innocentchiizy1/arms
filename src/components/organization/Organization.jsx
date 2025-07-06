@@ -1,64 +1,63 @@
 import { useState, useEffect } from "react";
 import "./Organization.css";
+import apiService from "../../services/api";
 
 function Organization() {
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [addForm, setAddForm] = useState({
+    name: "",
+    manager: "",
+    location: "",
+    budget: "",
+  });
+  const [addError, setAddError] = useState("");
+  const [addSuccess, setAddSuccess] = useState("");
 
   useEffect(() => {
-    // Simulate fetching organization data
-    const mockDepartments = [
-      {
-        id: 1,
-        name: "Executive",
-        manager: "John CEO",
-        employeeCount: 5,
-        budget: "$2,500,000",
-        location: "Floor 10",
-      },
-      {
-        id: 2,
-        name: "Engineering",
-        manager: "Sarah Tech Lead",
-        employeeCount: 45,
-        budget: "$4,200,000",
-        location: "Floor 8-9",
-      },
-      {
-        id: 3,
-        name: "Marketing",
-        manager: "Mike Marketing",
-        employeeCount: 12,
-        budget: "$1,800,000",
-        location: "Floor 7",
-      },
-      {
-        id: 4,
-        name: "Sales",
-        manager: "Lisa Sales",
-        employeeCount: 25,
-        budget: "$3,100,000",
-        location: "Floor 6",
-      },
-      {
-        id: 5,
-        name: "HR",
-        manager: "David HR",
-        employeeCount: 8,
-        budget: "$900,000",
-        location: "Floor 5",
-      },
-      {
-        id: 6,
-        name: "Finance",
-        manager: "Anna Finance",
-        employeeCount: 15,
-        budget: "$1,500,000",
-        location: "Floor 4",
-      },
-    ];
-    setDepartments(mockDepartments);
+    fetchDepartments();
   }, []);
+
+  const fetchDepartments = async () => {
+    try {
+      const data = await apiService.getDepartments();
+      setDepartments(data);
+    } catch (err) {
+      setDepartments([]);
+    }
+  };
+
+  const handleAddChange = (e) => {
+    setAddForm({ ...addForm, [e.target.name]: e.target.value });
+  };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    setAddError("");
+    setAddSuccess("");
+    if (
+      !addForm.name ||
+      !addForm.manager ||
+      !addForm.location ||
+      !addForm.budget
+    ) {
+      setAddError("All fields are required.");
+      return;
+    }
+    try {
+      await apiService.createDepartment(addForm);
+      setAddSuccess("Department added successfully!");
+      setTimeout(async () => {
+        setAddForm({ name: "", manager: "", location: "", budget: "" });
+        setShowAddForm(false);
+        setAddSuccess("");
+        await fetchDepartments();
+      }, 1500);
+    } catch (err) {
+      setAddError("Failed to add department.");
+    }
+  };
 
   const totalEmployees = departments.reduce(
     (sum, dept) => sum + dept.employeeCount,
@@ -74,6 +73,78 @@ function Organization() {
       <div className="organization-header">
         <h2>Organization</h2>
         <p>Company structure and department management</p>
+      </div>
+
+      <div className="add-department-section">
+        <button
+          className="add-department-btn add"
+          onClick={() => setShowAddForm((v) => !v)}
+        >
+          {showAddForm ? "Cancel" : "Add Department"}
+        </button>
+        {showAddForm && (
+          <form
+            className="department-form"
+            onSubmit={handleAddSubmit}
+            autoComplete="off"
+          >
+            {addError && <div className="error-message">{addError}</div>}
+            {addSuccess && <div className="success-message">{addSuccess}</div>}
+            <div className="form-row">
+              <div className="form-group">
+                <div className="field-title">Department Name</div>
+                <input
+                  type="text"
+                  name="name"
+                  value={addForm.name}
+                  onChange={handleAddChange}
+                  autoComplete="off"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <div className="field-title">Manager</div>
+                <input
+                  type="text"
+                  name="manager"
+                  value={addForm.manager}
+                  onChange={handleAddChange}
+                  autoComplete="off"
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <div className="field-title">Location</div>
+                <input
+                  type="text"
+                  name="location"
+                  value={addForm.location}
+                  onChange={handleAddChange}
+                  autoComplete="off"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <div className="field-title">Budget</div>
+                <input
+                  type="text"
+                  name="budget"
+                  value={addForm.budget}
+                  onChange={handleAddChange}
+                  autoComplete="off"
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="submit-btn">
+                Add Department
+              </button>
+            </div>
+          </form>
+        )}
       </div>
 
       <div className="org-stats">

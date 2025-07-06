@@ -79,35 +79,8 @@ function OnboardingLanding() {
             </button>
           </div>
         </div>
-
-        <div className="landing-footer">
-          <div className="footer-content">
-            <div className="footer-section">
-              <h4>For HR Professionals</h4>
-              <p>
-                Streamline your HR processes and focus on what matters most -
-                your people.
-              </p>
-            </div>
-            <div className="footer-section">
-              <h4>For CEOs & MDs</h4>
-              <p>
-                Get real-time insights into your organization's human capital
-                and make informed decisions.
-              </p>
-            </div>
-            <div className="footer-section">
-              <h4>For Organizations</h4>
-              <p>
-                Scale your HR operations efficiently as your business grows.
-              </p>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>&copy; 2024 TechPal HRM. All rights reserved.</p>
-          </div>
-        </div>
       </div>
+      <footer className="landing-footer-simple">TechPal © 2025</footer>
     </div>
   );
 }

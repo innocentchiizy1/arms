@@ -136,11 +136,7 @@ function Sidebar({ user }) {
     ];
 
     // Return appropriate menu based on role
-    if (userRole === "admin" || userRole === "hr") {
-      return adminMenuItems;
-    } else {
-      return employeeMenuItems;
-    }
+    return adminMenuItems;
   };
 
   const menuItems = getMenuItems(user?.role);

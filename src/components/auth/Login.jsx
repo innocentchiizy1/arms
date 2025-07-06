@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import apiService from "../../services/api";
 import "./Login.css";
 
@@ -6,10 +7,10 @@ function Login({ onLogin }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "admin",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -28,30 +29,21 @@ function Login({ onLogin }) {
       const response = await apiService.login({
         email: formData.email,
         password: formData.password,
-        role: formData.role,
       });
 
       // Store the token
-      if (response.token) {
-        localStorage.setItem("hrm_token", response.token);
+      if (response.data && response.data.token) {
+        localStorage.setItem("hrm_token", response.data.token);
       }
 
-      // Create user object with role
-      const userData = {
-        id: response.user?.id || "1",
-        name:
-          response.user?.name ||
-          `${
-            formData.role === "admin"
-              ? "John Doe (Admin)"
-              : "Alice Nguyen (Employee)"
-          }`,
-        email: formData.email,
-        role: formData.role,
-      };
+      // Store the session/user object
+      if (response.data) {
+        localStorage.setItem("hrm_session", JSON.stringify(response.data));
+      }
 
-      onLogin(userData);
+      onLogin(response.data);
       setLoading(false);
+      navigate("/dashboard"); // Redirect to dashboard after login
     } catch (err) {
       console.error("Login failed:", err);
       setError(err.message || "Login failed. Please check your credentials.");
@@ -71,7 +63,7 @@ function Login({ onLogin }) {
           {error && <div className="error-message">{error}</div>}
 
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <div className="field-title">Email</div>
             <input
               type="email"
               id="email"
@@ -79,12 +71,12 @@ function Login({ onLogin }) {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="Enter your email"
+              autoComplete="off"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <div className="field-title">Password</div>
             <input
               type="password"
               id="password"
@@ -92,21 +84,8 @@ function Login({ onLogin }) {
               value={formData.password}
               onChange={handleChange}
               required
-              placeholder="Enter your password"
+              autoComplete="off"
             />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="role">Role (for testing)</label>
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-            >
-              <option value="admin">Admin</option>
-              <option value="employee">Employee</option>
-            </select>
           </div>
 
           <button type="submit" className="login-btn" disabled={loading}>
@@ -116,7 +95,6 @@ function Login({ onLogin }) {
 
         <div className="login-footer">
           <p>Demo credentials: admin@company.com / password123</p>
-          <p>Select role to test different dashboards</p>
         </div>
       </div>
     </div>

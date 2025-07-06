@@ -1,59 +1,86 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./EmployeeForm.css";
+import apiService from "../../services/api";
 
 function EmployeeForm() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
-    phone: "",
-    department: "",
-    position: "",
-    salary: "",
-    joinDate: "",
-    status: "Active",
+    staffId: "",
+    employmentType: "",
+    hireDate: "",
+    employmentDetails: {
+      employmentType: "",
+      employmentStatus: "",
+      hireDate: "",
+      salary: "",
+      currency: "",
+    },
   });
+
+  // Reset form data when component mounts to ensure it's blank
+  useEffect(() => {
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      staffId: "",
+      employmentType: "",
+      hireDate: "",
+      employmentDetails: {
+        employmentType: "",
+        employmentStatus: "",
+        hireDate: "",
+        salary: "",
+        currency: "",
+      },
+    });
+  }, []);
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     if (id) {
       setIsEdit(true);
-      // Simulate fetching employee data
-      const mockEmployee = {
-        id: id,
-        name: "John Doe",
-        email: "john.doe@company.com",
-        phone: "+1 234 567 8900",
-        department: "Engineering",
-        position: "Senior Developer",
-        salary: "75000",
-        joinDate: "2023-01-15",
-        status: "Active",
-      };
-      setFormData(mockEmployee);
+      // TODO: Fetch real employee data when edit functionality is implemented
+      // For now, keep form blank even in edit mode
     }
   }, [id]);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    if (name.startsWith("employmentDetails.")) {
+      const key = name.replace("employmentDetails.", "");
+      setFormData((prev) => ({
+        ...prev,
+        employmentDetails: {
+          ...prev.employmentDetails,
+          [key]: value,
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    setSuccess("");
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Navigate back to employee list
-      navigate("/employees");
+      await apiService.createEmployee(formData);
+      setSuccess("Employee added successfully!");
+      setTimeout(() => {
+        navigate("/employees");
+      }, 1500); // Show message for 1.5 seconds
     } catch (error) {
       console.error("Error saving employee:", error);
     } finally {
@@ -92,23 +119,35 @@ function EmployeeForm() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="form">
+      <form onSubmit={handleSubmit} className="form" autoComplete="off">
+        {success && <div className="success-message">{success}</div>}
         <div className="form-grid">
           <div className="form-group">
-            <label htmlFor="name">Full Name *</label>
+            <div className="field-title">First Name *</div>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
               onChange={handleChange}
               required
-              placeholder="Enter full name"
+              autoComplete="off"
             />
           </div>
-
           <div className="form-group">
-            <label htmlFor="email">Email *</label>
+            <div className="field-title">Last Name *</div>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              required
+              autoComplete="off"
+            />
+          </div>
+          <div className="form-group">
+            <div className="field-title">Email *</div>
             <input
               type="email"
               id="email"
@@ -116,94 +155,113 @@ function EmployeeForm() {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="Enter email address"
+              autoComplete="off"
             />
           </div>
-
           <div className="form-group">
-            <label htmlFor="phone">Phone Number</label>
+            <div className="field-title">Staff ID *</div>
             <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
+              type="text"
+              id="staffId"
+              name="staffId"
+              value={formData.staffId}
               onChange={handleChange}
-              placeholder="Enter phone number"
+              required
+              autoComplete="off"
             />
           </div>
-
           <div className="form-group">
-            <label htmlFor="department">Department *</label>
+            <div className="field-title">Employment Type *</div>
             <select
-              id="department"
-              name="department"
-              value={formData.department}
+              id="employmentType"
+              name="employmentType"
+              value={formData.employmentType}
               onChange={handleChange}
               required
             >
-              <option value="">Select Department</option>
-              {departments.map((dept) => (
-                <option key={dept} value={dept}>
-                  {dept}
-                </option>
-              ))}
+              <option value=""></option>
+              <option value="full_time">Full Time</option>
+              <option value="part_time">Part Time</option>
+              <option value="contract">Contract</option>
             </select>
           </div>
-
           <div className="form-group">
-            <label htmlFor="position">Position *</label>
-            <select
-              id="position"
-              name="position"
-              value={formData.position}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Position</option>
-              {positions.map((pos) => (
-                <option key={pos} value={pos}>
-                  {pos}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="salary">Salary</label>
-            <input
-              type="number"
-              id="salary"
-              name="salary"
-              value={formData.salary}
-              onChange={handleChange}
-              placeholder="Enter salary"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="joinDate">Join Date *</label>
+            <div className="field-title">Hire Date *</div>
             <input
               type="date"
-              id="joinDate"
-              name="joinDate"
-              value={formData.joinDate}
+              id="hireDate"
+              name="hireDate"
+              value={formData.hireDate}
               onChange={handleChange}
               required
+              autoComplete="off"
             />
           </div>
-
           <div className="form-group">
-            <label htmlFor="status">Status</label>
+            <div className="field-title">Employment Details Type *</div>
             <select
-              id="status"
-              name="status"
-              value={formData.status}
+              id="employmentDetails.employmentType"
+              name="employmentDetails.employmentType"
+              value={formData.employmentDetails.employmentType}
               onChange={handleChange}
+              required
             >
-              <option value="Active">Active</option>
-              <option value="On Leave">On Leave</option>
-              <option value="Terminated">Terminated</option>
+              <option value=""></option>
+              <option value="full_time">Full Time</option>
+              <option value="part_time">Part Time</option>
+              <option value="contract">Contract</option>
             </select>
+          </div>
+          <div className="form-group">
+            <div className="field-title">Employment Status *</div>
+            <select
+              id="employmentDetails.employmentStatus"
+              name="employmentDetails.employmentStatus"
+              value={formData.employmentDetails.employmentStatus}
+              onChange={handleChange}
+              required
+            >
+              <option value=""></option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="terminated">Terminated</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <div className="field-title">Employment Details Hire Date *</div>
+            <input
+              type="date"
+              id="employmentDetails.hireDate"
+              name="employmentDetails.hireDate"
+              value={formData.employmentDetails.hireDate}
+              onChange={handleChange}
+              required
+              autoComplete="off"
+            />
+          </div>
+          <div className="form-group">
+            <div className="field-title">Salary *</div>
+            <input
+              type="number"
+              id="employmentDetails.salary"
+              name="employmentDetails.salary"
+              value={formData.employmentDetails.salary}
+              onChange={handleChange}
+              required
+              autoComplete="off"
+            />
+          </div>
+          <div className="form-group">
+            <div className="field-title">Currency *</div>
+            <input
+              type="text"
+              id="employmentDetails.currency"
+              name="employmentDetails.currency"
+              value={formData.employmentDetails.currency}
+              onChange={handleChange}
+              required
+              autoComplete="off"
+            />
           </div>
         </div>
 
